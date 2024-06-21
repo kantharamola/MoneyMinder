@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MoneyMinder</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">MoneyMinder</h1>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="budget">Budget</label>
+                        <input type="number" step="0.01" class="form-control" id="budget" name="budget" placeholder="Enter your budget" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Update Budget</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h2>Expenses</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="expense_description">Expense Description</label>
+                        <input type="text" class="form-control" id="expense_description" name="expense_description" placeholder="Enter expense description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expense_amount">Expense Amount</label>
+                        <input type="number" step="0.01" class="form-control" id="expense_amount" name="expense_amount" placeholder="Enter expense amount" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Add Expense</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h2>Wishlist</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="wishlist_description">Wishlist Description</label>
+                        <input type="text" class="form-control" id="wishlist_description" name="wishlist_description" placeholder="Enter wishlist description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wishlist_amount">Wishlist Amount</label>
+                        <input type="number" step="0.01" class="form-control" id="wishlist_amount" name="wishlist_amount" placeholder="Enter wishlist amount" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Add to Wishlist</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h2>Remainders</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="remainder_description">Remainder Description</label>
+                        <input type="text" class="form-control" id="remainder_description" name="remainder_description" placeholder="Enter remainder description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="remainder_date">Remainder Date</label>
+                        <input type="date" class="form-control" id="remainder_date" name="remainder_date" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Add Remainder</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h2>Overview</h2>
+                {% if budget %}
+                    <p><strong>Budget:</strong> {{ budget.amount }}</p>
+                    <p><strong>Remaining Budget:</strong> {{ remaining_budget }}</p>
+                    {% if remaining_budget >= 0 %}
+                        <p>We can afford this!</p>
+                    {% endif %}
+                {% endif %}
+
+                <h3>Expenses:</h3>
+                <ul>
+                    {% for expense in expenses %}
+                        <li>Expense: {{ expense.description }}, Amount: {{ expense.amount }}</li>
+                    {% empty %}
+                        <li>No expenses yet.</li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Wishlist Items:</h3>
+                <ul>
+                    {% for wishlist in wishlists %}
+                        <li>Wishlist Item: {{ wishlist.description }}, Price: {{ wishlist.amount }}</li>
+                    {% empty %}
+                        <li>No wishlist items yet.</li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Remainders:</h3>
+                <ul>
+                    {% for remainder in remainders %}
+                        <li>Remainder: {{ remainder.description }}, Due Date: {{ remainder.due_date }}</li>
+                    {% empty %}
+                        <li>No remainders yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Submit button at the end -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit All Changes</button>
+        </div>
+
+    </div>
+
+    <!-- Optional: jQuery and Bootstrap JS for enhanced functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
